@@ -12,7 +12,7 @@ try:
     import tensorflow.python.keras as keras
 except:
     import tensorflow.keras as keras
-
+os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 
 
 def load_dataset():
@@ -113,6 +113,7 @@ def train_step(images):
 
       gen_loss = generator_loss(fake_output)
       disc_loss = discriminator_loss(real_output, fake_output)
+      print('generator_loss',gen_loss,'discriminator_loss',disc_loss)
 
     gradients_of_generator = gen_tape.gradient(gen_loss, generator.trainable_variables)
     gradients_of_discriminator = disc_tape.gradient(disc_loss, discriminator.trainable_variables)
@@ -126,7 +127,6 @@ def train(dataset, epochs):
     start = time.time()
 
     for image_batch in dataset:
-        print("train_step!!")
         train_step(image_batch)
 
     # Produce images for the GIF as we go
